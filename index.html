@@ -7,20 +7,23 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
       margin: 0;
       padding: 0;
       background-color: #f7f9fc;
+      color: #2c3e50;
     }
 
     h1 {
-      color: #2c3e50;
       margin-top: 40px;
+      font-size: 2.5em;
+      color: #34495e;
     }
 
     p {
-      margin-bottom: 30px;
-      color: #34495e;
+      margin: 20px auto;
+      font-size: 1.1em;
+      max-width: 600px;
+      color: #555;
     }
 
     form {
@@ -29,14 +32,12 @@
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       max-width: 400px;
-      margin: 0 auto;
+      margin: 0 auto 40px;
     }
 
     label {
       display: block;
-      text-align: left;
       margin-bottom: 5px;
-      color: #34495e;
       font-weight: bold;
     }
 
@@ -59,21 +60,40 @@
       border-radius: 5px;
       font-size: 16px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: transform 0.2s, background 0.3s ease;
     }
 
     button:hover {
       background: linear-gradient(45deg, #0056b3, #003d80);
+      transform: scale(1.03);
     }
 
     .instagram {
-      margin-top: 30px;
+      background-color: #eef2f6;
+      padding: 30px 10px;
       text-align: center;
+      border-top: 2px solid #ddd;
+    }
+
+    .instagram h2 {
+      margin-bottom: 20px;
+      font-size: 1.8em;
+      color: #2c3e50;
+    }
+
+    .instagram iframe {
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      max-width: 90%;
+      margin: 0 auto;
+      display: block;
+      overflow: hidden;
     }
 
     .footer {
-      margin-top: 20px;
-      font-size: 12px;
+      margin-top: 30px;
+      text-align: center;
+      font-size: 0.9em;
       color: #888;
     }
   </style>
@@ -95,7 +115,6 @@
 
   <div class="instagram">
     <h2>Mira algunas fotos de mis sesiones en Instagram</h2>
-    <!-- SnapWidget -->
     <iframe src="https://snapwidget.com/embed/1085363" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:100%; height:300px;" title="Posts from Instagram"></iframe>
   </div>
 
