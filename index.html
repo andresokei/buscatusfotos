@@ -4,59 +4,78 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>¡Contáctame! | Busca Tus Fotos</title>
+  <link rel="icon" href="favicon.ico"> <!-- Agrega un favicon -->
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
       margin: 0;
       padding: 0;
-      background-color: #f0f0f0;
+      background-color: #f7f9fc;
     }
 
     h1 {
-      color: #333;
-      margin-top: 20px;
+      color: #2c3e50;
+      margin-top: 40px;
     }
 
     p {
-      margin-bottom: 20px;
-      color: #555;
+      margin-bottom: 30px;
+      color: #34495e;
     }
 
     form {
-      background: #fff;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       max-width: 400px;
-      margin: 20px auto;
+      margin: 0 auto;
     }
 
     label {
       display: block;
       text-align: left;
       margin-bottom: 5px;
-      color: #333;
+      color: #34495e;
+      font-weight: bold;
     }
 
-    input, textarea, button {
+    input, textarea {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
+      padding: 12px;
+      margin-bottom: 20px;
       border: 1px solid #ccc;
       border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #007BFF;
+      outline: none;
     }
 
     button {
-      background: #007BFF;
+      width: 100%;
+      background: linear-gradient(45deg, #007BFF, #0056b3);
       color: #fff;
       border: none;
-      cursor: pointer;
+      padding: 12px;
+      border-radius: 5px;
       font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
     }
 
     button:hover {
-      background: #0056b3;
+      background: linear-gradient(45deg, #0056b3, #003d80);
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #888;
     }
   </style>
 </head>
@@ -64,21 +83,18 @@
   <h1>¡Hola, bienvenido a Busca Tus Fotos!</h1>
   <p>Por favor, usa este formulario para contactarme y pedir tus fotos de surf.</p>
   
-  <!-- modify this form HTML and place wherever you want your form -->
-<form
-  action="https://formspree.io/f/xwpkjjql"
-  method="POST"
->
-  <label>
-    Your email:
-    <input type="email" name="email">
-  </label>
-  <label>
-    Your message:
-    <textarea name="message"></textarea>
-  </label>
-  <!-- your other form fields go here -->
-  <button type="submit">Send</button>
-</form>
+  <form action="https://formspree.io/f/xwpkjjql" method="POST">
+    <label for="email">Tu correo:</label>
+    <input type="email" id="email" name="email" placeholder="Escribe tu correo" required>
+    
+    <label for="message">Tu mensaje:</label>
+    <textarea id="message" name="message" placeholder="Escribe tu mensaje aquí..." rows="5" required></textarea>
+    
+    <button type="submit">Enviar</button>
+  </form>
+
+  <div class="footer">
+    <p>© 2024 Busca Tus Fotos. Todos los derechos reservados.</p>
+  </div>
 </body>
 </html>
