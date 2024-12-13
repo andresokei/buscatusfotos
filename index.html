@@ -1,12 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡Contáctame! | Busca Tus Fotos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+    }
+
+    h1 {
+      color: #333;
+      margin-top: 20px;
+    }
+
+    p {
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      margin: 20px auto;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
 </head>
 <body>
-    <h1>HOLA MUNDO!</h1>
-    
+  <h1>¡Hola, bienvenido a Busca Tus Fotos!</h1>
+  <p>Por favor, usa este formulario para contactarme y pedir tus fotos de surf.</p>
+  
+  <form action="https://formspree.io/f/xwpkjjq1" method="POST">
+    <label for="email">Tu correo:</label>
+    <input type="email" id="email" name="email" placeholder="Introduce tu correo" required>
+
+    <label for="message">Tu mensaje:</label>
+    <textarea id="message" name="message" placeholder="Escribe tu mensaje aquí..." rows="5" required></textarea>
+
+    <button type="submit">Enviar</button>
+  </form>
 </body>
 </html>
