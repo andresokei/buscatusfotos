@@ -13,17 +13,71 @@
       color: #2c3e50;
     }
 
-    h1 {
-      margin-top: 40px;
-      font-size: 2.5em;
-      color: #34495e;
+    /* Hero Section */
+    .hero {
+      height: 80vh;
+      background: url('./kanoa.JPG') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      position: relative;
     }
 
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Reducimos la opacidad del filtro */
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+
+    .hero h1 {
+      font-size: 3.5em;
+      margin: 0;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .hero p {
+      font-size: 1.5em;
+      margin: 20px 0;
+      color: #f8f8f8; /* Ajustamos el color para mayor visibilidad */
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero button {
+      background: linear-gradient(45deg, #007BFF, #0056b3);
+      color: #fff;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s ease;
+    }
+
+    .hero button:hover {
+      background: linear-gradient(45deg, #0056b3, #003d80);
+      transform: scale(1.05);
+    }
+
+    /* General */
     p {
       margin: 20px auto;
       font-size: 1.1em;
       max-width: 600px;
       color: #555;
+      text-align: center;
     }
 
     form {
@@ -81,13 +135,19 @@
       color: #2c3e50;
     }
 
-    .instagram iframe {
-      border-radius: 10px;
-      border: 1px solid #ddd;
-      max-width: 90%;
-      margin: 0 auto;
-      display: block;
-      overflow: hidden;
+    .instagram a {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      color: #007BFF;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .instagram img {
+      width: 30px;
+      margin-right: 10px;
+      vertical-align: middle;
     }
 
     .footer {
@@ -100,22 +160,43 @@
   <script src="https://snapwidget.com/js/snapwidget.js"></script>
 </head>
 <body>
-  <h1>¡Hola, bienvenido a Busca Tus Fotos!</h1>
-  <p>Por favor, usa este formulario para contactarme y pedir tus fotos de surf.</p>
+  <!-- Hero Section -->
+  <div class="hero">
+    <div class="hero-content">
+      <h1>¡Encuentra tus fotos de surf!</h1>
+      <p>Capturamos tus mejores momentos en las olas. Encuentra y descarga tus fotos aquí.</p>
+      <button onclick="document.querySelector('form').scrollIntoView({ behavior: 'smooth' })">
+        Pide tus fotos ahora
+      </button>
+    </div>
+  </div>
+
+  <p>Rellena el formulario para que pueda enviarte las fotos de tu sesión. Por favor, indica la fecha y el lugar donde te hice las fotos.</p>
   
   <form action="https://formspree.io/f/xwpkjjql" method="POST">
     <label for="email">Tu correo:</label>
     <input type="email" id="email" name="email" placeholder="Escribe tu correo" required>
     
-    <label for="message">Tu mensaje:</label>
-    <textarea id="message" name="message" placeholder="Escribe tu mensaje aquí..." rows="5" required></textarea>
+    <label for="date">Fecha de la sesión:</label>
+    <input type="date" id="date" name="date" required>
+    
+    <label for="location">Lugar de la sesión:</label>
+    <input type="text" id="location" name="location" placeholder="Escribe el lugar (ej. Playa X)" required>
+    
+    <label for="message">Mensaje adicional:</label>
+    <textarea id="message" name="message" placeholder="Escribe algún detalle adicional..." rows="4"></textarea>
     
     <button type="submit">Enviar</button>
   </form>
 
   <div class="instagram">
-    <h2>Mira algunas fotos de mis sesiones en Instagram</h2>
-    <iframe src="https://snapwidget.com/embed/1085363" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:100%; height:300px;" title="Posts from Instagram"></iframe>
+    <h2>Sígueme en Instagram</h2>
+    <a href="https://instagram.com/andresokei" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
+      @andresokei
+    </a>
+    <!-- SnapWidget -->
+    <iframe src="https://snapwidget.com/embed/1085363" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:90%; height:300px; margin: 20px auto; display: block;" title="Posts from Instagram"></iframe>
   </div>
 
   <div class="footer">
