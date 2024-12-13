@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>¡Contáctame! | Busca Tus Fotos</title>
-  <link rel="icon" href="favicon.ico"> <!-- Agrega un favicon -->
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -51,11 +50,6 @@
       font-size: 14px;
     }
 
-    input:focus, textarea:focus {
-      border-color: #007BFF;
-      outline: none;
-    }
-
     button {
       width: 100%;
       background: linear-gradient(45deg, #007BFF, #0056b3);
@@ -70,6 +64,15 @@
 
     button:hover {
       background: linear-gradient(45deg, #0056b3, #003d80);
+    }
+
+    .instagram {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .instagram img {
+      margin-top: 10px;
     }
 
     .footer {
@@ -92,6 +95,15 @@
     
     <button type="submit">Enviar</button>
   </form>
+
+  <div class="instagram">
+    <a href="https://instagram.com/andresokei" target="_blank" style="text-decoration: none; color: inherit;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" width="30" style="vertical-align: middle;">
+      Sígueme en Instagram (@andresokei)
+    </a>
+    <p>Mira algunas fotos de mis sesiones:</p>
+    <iframe src="https://snapwidget.com/embed/12345" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:100%; height:300px;"></iframe>
+  </div>
 
   <div class="footer">
     <p>© 2024 Busca Tus Fotos. Todos los derechos reservados.</p>
