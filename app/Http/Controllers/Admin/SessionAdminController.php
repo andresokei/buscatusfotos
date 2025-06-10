@@ -43,7 +43,7 @@ public function store(Request $request)
             'title' => 'required|string|max:255',
             'date' => 'required|date',
             'description' => 'nullable|string|max:2000',
-            'photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:15360'
+            'photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:1048576'
         ]);
 
         $slug = Str::slug($request->title . '-' . $request->date);
@@ -131,7 +131,7 @@ public function index()
     public function uploadPhoto(Request $request, $id)
 {
     $request->validate([
-        'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240' // Max 10MB
+        'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:1048576' // Max 10MB
     ]);
 
     try {
