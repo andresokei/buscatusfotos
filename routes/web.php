@@ -25,6 +25,9 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/sesiones/{id}/fotos', [App\Http\Controllers\Admin\SessionAdminController::class, 'photos'])->name('admin.session.photos');
     Route::post('/sesiones/{id}/fotos', [App\Http\Controllers\Admin\SessionAdminController::class, 'uploadPhoto'])->name('admin.session.upload');
     Route::delete('/sesiones/{id}', [App\Http\Controllers\Admin\SessionAdminController::class, 'destroy'])->name('admin.session.destroy');
+    
+    // ⭐ NUEVA RUTA - Agregar esta línea:
+    Route::delete('/fotos/{photo}', [App\Http\Controllers\Admin\SessionAdminController::class, 'deletePhoto'])->name('admin.photo.delete');
 });
 
 Route::post('/checkout', [App\Http\Controllers\CheckoutController::class, 'createSession'])->name('checkout.create'); 

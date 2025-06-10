@@ -93,7 +93,7 @@
                             <i class="fas fa-eye"></i>
                         </button>
                         <button class="btn btn-sm btn-outline-danger" 
-                                onclick="confirmDelete('{{ $photo->name }}')">
+                                onclick="confirmDelete('{{ $photo->name }}', '{{ $photo->id }}')">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -115,11 +115,126 @@
 
 @section('scripts')
 <script>
-function confirmDelete(photoName) {
-    if (confirm('¿Estás seguro de eliminar la foto "' + photoName + '"?')) {
-        // Aquí iría la lógica de eliminación
-        alert('Funcionalidad de eliminar - próximamente');
+function confirmDelete(photoName, photoId) {
+    console.log('Intentando eliminar foto:', photoName, 'ID:', photoId);
+    
+    if (confirm('¿Estás seguro de eliminar la foto "' + photoName + '"?\n\nEsta acción no se puede deshacer.')) {
+        // Verificar que tenemos el token CSRF
+        const csrfToken = document.querySelector('meta[name="csrf-token"]');
+        if (!csrfToken) {
+            console.error('No se encontró el token CSRF');
+            alert('Error: No se encontró el token de seguridad. Recarga la página.');
+            return;
+        }
+        
+        console.log('Token CSRF encontrado:', csrfToken.getAttribute('content'));
+        
+        // Mostrar loading en el botón
+        const button = event.target.closest('button');
+        const originalHTML = button.innerHTML;
+        button.disabled = true;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        
+        console.log('Haciendo petición a:', '/admin/fotos/' + photoId);
+        
+        // Realizar petición AJAX
+        fetch('/admin/fotos/' + photoId, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken.getAttribute('content'),
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            console.log('Respuesta recibida:', response.status, response.statusText);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            return response.json();
+        })
+        .then(data => {
+            console.log('Datos recibidos:', data);
+            
+            if (data.success) {
+                // Eliminar la tarjeta de la vista
+                const card = button.closest('.col-xl-2, .col-lg-3, .col-md-4, .col-sm-6');
+                if (card) {
+                    card.remove();
+                    console.log('Tarjeta eliminada del DOM');
+                }
+                
+                // Mostrar mensaje de éxito
+                showAlert('success', 'Foto eliminada correctamente');
+                
+                // Actualizar contador si existe
+                updatePhotoCount();
+            } else {
+                throw new Error(data.message || 'Error al eliminar la foto');
+            }
+        })
+        .catch(error => {
+            console.error('Error completo:', error);
+            showAlert('danger', 'Error al eliminar la foto: ' + error.message);
+            
+            // Restaurar botón
+            button.disabled = false;
+            button.innerHTML = originalHTML;
+        });
     }
 }
+
+function showAlert(type, message) {
+    console.log('Mostrando alerta:', type, message);
+    
+    const alertHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    `;
+    
+    // Insertar alerta al principio del contenido
+    const container = document.querySelector('.container-fluid');
+    if (container) {
+        const firstElement = container.firstElementChild;
+        firstElement.insertAdjacentHTML('beforebegin', alertHTML);
+        
+        // Auto-ocultar después de 5 segundos
+        setTimeout(() => {
+            const alert = container.querySelector('.alert');
+            if (alert) {
+                alert.remove();
+            }
+        }, 5000);
+    }
+}
+
+function updatePhotoCount() {
+    const photoCards = document.querySelectorAll('.col-xl-2, .col-lg-3, .col-md-4, .col-sm-6');
+    const countElement = document.querySelector('.text-muted');
+    if (countElement && countElement.textContent.includes('fotos')) {
+        const newText = countElement.innerHTML.replace(/\d+\s+fotos/, photoCards.length + ' fotos');
+        countElement.innerHTML = newText;
+        console.log('Contador actualizado a:', photoCards.length, 'fotos');
+    }
+}
+
+// Verificar al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Página cargada, verificando elementos...');
+    
+    const csrfToken = document.querySelector('meta[name="csrf-token"]');
+    if (csrfToken) {
+        console.log('✓ Token CSRF encontrado');
+    } else {
+        console.error('✗ Token CSRF NO encontrado');
+    }
+    
+    const deleteButtons = document.querySelectorAll('.btn-outline-danger');
+    console.log('✓ Botones de eliminar encontrados:', deleteButtons.length);
+});
 </script>
 @endsection

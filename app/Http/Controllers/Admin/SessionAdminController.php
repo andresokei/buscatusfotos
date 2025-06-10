@@ -36,6 +36,40 @@ class SessionAdminController extends Controller
     return view('admin.session-create');
 }
 
+// En App\Http\Controllers\Admin\SessionAdminController.php
+
+public function deletePhoto($photoId)
+{
+    try {
+        // Buscar la foto por ID usando Spatie Media Library
+        $photo = \Spatie\MediaLibrary\MediaCollections\Models\Media::findOrFail($photoId);
+        
+        // Verificar que la foto pertenece a una sesión
+        if (!$photo->model_type || !$photo->model_id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Foto no válida'
+            ], 400);
+        }
+        
+        // Eliminar la foto (archivo físico y registro en BD)
+        $photo->delete();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Foto eliminada correctamente'
+        ]);
+        
+    } catch (\Exception $e) {
+        \Log::error('Error eliminando foto: ' . $e->getMessage());
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'Error al eliminar la foto'
+        ], 500);
+    }
+}
+
 public function store(Request $request)
 {
     try {
