@@ -67,7 +67,7 @@ class CheckoutController extends Controller
     $purchase = Purchase::create([
         'email' => $request->email,
         'media_ids' => $cart,
-        'session_id' => 1,
+        // 'session_id' => 1,
         'amount' => $amount / 100, // Convertir céntimos a euros
         'download_token' => Str::uuid(),
         'expires_at' => now()->addHours(72),
@@ -98,7 +98,7 @@ public function success(Request $request)
             $purchase = Purchase::create([
                 'email' => $session->metadata->email,
                 'media_ids' => $cart,
-                'session_id' => 1,
+                // 'session_id' => 1,
                 'amount' => $session->amount_total / 100,
                 'download_token' => Str::uuid(),
                 'expires_at' => now()->addHours(72),
