@@ -11,58 +11,38 @@
             <li class="breadcrumb-item active">{{ $session->title }}</li>
         </ol>
     </nav>
-    <!-- Pricing Section -->
-<div class="row mb-5">
-    <div class="col-12 text-center mb-4">
-        <!-- <h2><i class="fas fa-tags me-2"></i>Nuestros Precios</h2> -->
-        <p class="text-muted">Descuentos por volumen - ¡cuantas más fotos, más ahorras!</p>
-    </div>
-    
-    <div class="col-lg-8 offset-lg-2">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <div class="row text-center">
-                    <div class="col-6 col-md-3 mb-3">
-                        <div class="border rounded p-3">
-                            <h5 class="text-primary">1 foto</h5>
-                            <h4>5,00 €</h4>
-                            <small class="text-muted">5,00 €/foto</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3 mb-3">
-                        <div class="border rounded p-3">
-                            <h5 class="text-primary">2 fotos</h5>
-                            <h4>9,00 €</h4>
-                            <small class="text-success">4,50 €/foto</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3 mb-3">
-                        <div class="border rounded p-3 bg-light">
-                            <div class="badge bg-success mb-2">Más popular</div>
-                            <h5 class="text-primary">3 fotos</h5>
-                            <h4>12,00 €</h4>
-                            <small class="text-success">4,00 €/foto</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3 mb-3">
-                        <div class="border rounded p-3">
-                            <h5 class="text-primary">6+ fotos</h5>
-                            <h4>desde 20,00 €</h4>
-                            <small class="text-success">3,33 €/foto</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center mt-3">
-                    <small class="text-muted">
-                        <i class="fas fa-info-circle me-1"></i>
-                        7+ fotos: 20,00 € + 3,00 € por cada foto adicional
-                    </small>
-                </div>
+
+    <!-- Pricing Section - Nueva versión compacta -->
+    <div class="row mb-3 text-center">
+        <div class="col-3">
+            <div class="border rounded p-2">
+                <strong>1 foto</strong><br>
+                5€<br>
+                <small>(5€/u)</small>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="border rounded p-2">
+                <strong>2 fotos</strong><br>
+                9€<br>
+                <small>(4,50€/u)</small>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="border rounded p-2">
+                <strong>3 fotos</strong><br>
+                12€<br>
+                <small>(4€/u)</small>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="border rounded p-2">
+                <strong>6+ fotos</strong><br>
+                desde 20€<br>
+                <small>(3,33€/u)</small>
             </div>
         </div>
     </div>
-</div>
-
 
     <!-- Session Header -->
     <div class="row mb-4">
