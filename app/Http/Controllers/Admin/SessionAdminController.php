@@ -131,7 +131,7 @@ public function index()
     public function uploadPhoto(Request $request, $id)
 {
     $request->validate([
-        'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:1048576' // Max 10MB
+        'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:1048576' 
     ]);
 
     try {
