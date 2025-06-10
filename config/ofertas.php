@@ -17,7 +17,7 @@ return [
     ],
     
     'admin' => [
-        'max_file_size' => 100240, // 10MB en KB
+        'max_file_size' => 10485760, // 10MB en KB
         'allowed_types' => ['jpeg', 'png', 'jpg', 'gif'],
     ]
 ];
