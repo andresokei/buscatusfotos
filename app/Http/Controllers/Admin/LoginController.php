@@ -18,7 +18,7 @@ class LoginController extends Controller
         $password = $request->password;
 
         // Credenciales básicas (en producción usar hash)
-        if ($username === 'admin' && $password === 'password123') {
+        if ($username === 'andresokei' && $password === 'admin2020!') {
             session(['admin_logged_in' => true]);
             return redirect()->route('admin.index');
         }

@@ -46,11 +46,7 @@
                         </form>
 
                         <div class="mt-4 text-center">
-                            <div class="alert alert-info mb-3">
-                                <small>
-                                    <strong>Demo:</strong> admin / password123
-                                </small>
-                            </div>
+                            
                             <a href="{{ route('home') }}" class="text-decoration-none">
                                 <i class="fas fa-arrow-left me-1"></i>Volver al sitio web
                             </a>
