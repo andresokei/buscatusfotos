@@ -2,7 +2,7 @@
 
 return [
     'precios' => [
-        1 => 50,      // 1 foto = 5,00 €
+        1 => 500,      // 1 foto = 5,00 €
         2 => 900,      // 2 fotos = 9,00 € (4,50€ cada una)
         3 => 1200,     // 3 fotos = 12,00 € (4,00€ cada una)
         4 => 1500,     // 4 fotos = 15,00 € (3,75€ cada una)
