@@ -42,8 +42,8 @@ public function store(Request $request)
         $request->validate([
             'title' => 'required|string|max:255',
             'date' => 'required|date',
-            'description' => 'nullable|string|max:1000',
-            'photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240'
+            'description' => 'nullable|string|max:2000',
+            'photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:15360'
         ]);
 
         $slug = Str::slug($request->title . '-' . $request->date);
