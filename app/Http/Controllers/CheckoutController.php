@@ -43,8 +43,8 @@ class CheckoutController extends Controller
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => route('cart.view'),
+            'success_url' => env('APP_URL') . '/checkout/success?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => env('APP_URL') . '/carrito',
             'customer_email' => $request->email,
             'metadata' => [
                 'cart' => json_encode($cart),

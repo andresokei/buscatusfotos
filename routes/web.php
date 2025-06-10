@@ -37,3 +37,5 @@ Route::get('/descargar/{token}', [App\Http\Controllers\DownloadController::class
 Route::get('/descargar/{token}/download', [App\Http\Controllers\DownloadController::class, 'download'])->name('download.file');
 
 Route::get('/checkout/success', [App\Http\Controllers\CheckoutController::class, 'success'])->name('checkout.success');
+
+Route::post('/webhooks/stripe', [App\Http\Controllers\WebhookController::class, 'handleStripe'])->name('webhook.stripe');
