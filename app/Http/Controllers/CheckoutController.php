@@ -70,7 +70,7 @@ class CheckoutController extends Controller
         'media_ids' => $cart,
         // 'session_id' => 1,
         'amount' => $amount / 100, // Convertir céntimos a euros
-        'download_token' => Str::uuid(),
+        'download_token' => Str::random(64),
         'expires_at' => now()->addHours(config('ofertas.descarga.expiracion_horas', 72)),
         'payment_status' => 'paid'
     ]);

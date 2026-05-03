@@ -50,7 +50,6 @@ class WebhookController extends Controller
 
         Log::info('Compra procesada via webhook', [
             'purchase_id' => $purchase->id,
-            'email' => $purchase->email,
         ]);
     }
 }

@@ -63,17 +63,22 @@ class CartController extends Controller
             return collect();
         }
 
+        $listedSessionIds = Session::where('listed', true)->pluck('id');
+
         return Media::whereIn('id', $cart)
             ->where('collection_name', 'photos')
             ->where('model_type', Session::class)
+            ->whereIn('model_id', $listedSessionIds)
             ->get();
     }
 
     private function isPurchasablePhoto(int $photoId): bool
     {
-        return Media::where('id', $photoId)
+        $media = Media::where('id', $photoId)
             ->where('collection_name', 'photos')
             ->where('model_type', Session::class)
-            ->exists();
+            ->first();
+
+        return $media !== null && optional($media->model)->listed === true;
     }
 }

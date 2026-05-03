@@ -13,7 +13,9 @@ Route::post('/carrito', [CartController::class, 'update'])->name('cart.update');
 // Rutas de administración
 // Rutas de login
 Route::get('/admin/login', [App\Http\Controllers\Admin\LoginController::class, 'showLogin'])->name('admin.login');
-Route::post('/admin/login', [App\Http\Controllers\Admin\LoginController::class, 'login'])->name('admin.login.post');
+Route::post('/admin/login', [App\Http\Controllers\Admin\LoginController::class, 'login'])
+    ->middleware('throttle:5,1')
+    ->name('admin.login.post');
 Route::post('/admin/logout', [App\Http\Controllers\Admin\LoginController::class, 'logout'])->name('admin.logout');
 
 // Rutas de administración protegidas
@@ -32,9 +34,10 @@ Route::prefix('admin')->middleware('admin')->group(function () {
 
 Route::post('/checkout', [App\Http\Controllers\CheckoutController::class, 'createSession'])->name('checkout.create'); 
 
-Route::get('/descargar/{token}', [App\Http\Controllers\DownloadController::class, 'show'])->name('download.show');
-
-Route::get('/descargar/{token}/download', [App\Http\Controllers\DownloadController::class, 'download'])->name('download.file');
+Route::middleware('throttle:30,1')->group(function () {
+    Route::get('/descargar/{token}', [App\Http\Controllers\DownloadController::class, 'show'])->name('download.show');
+    Route::get('/descargar/{token}/download', [App\Http\Controllers\DownloadController::class, 'download'])->name('download.file');
+});
 
 Route::get('/checkout/success', [App\Http\Controllers\CheckoutController::class, 'success'])->name('checkout.success');
 
