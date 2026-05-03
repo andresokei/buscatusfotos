@@ -1,116 +1,115 @@
 @extends('layouts.admin')
 
-@section('title', 'Sesiones - Admin')
+@section('title', 'Sesiones — Admin')
 
 @section('content')
-<div class="container-fluid">
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="container-x">
+
+    {{-- Header --}}
+    <div class="flex items-end justify-between mb-10 pb-8 border-b border-zinc-200 gap-4">
         <div>
-            <h1><i class="fas fa-photo-video me-2"></i>Gestionar Sesiones</h1>
-            <p class="text-muted mb-0">Administra las sesiones de fotos</p>
+            <p class="meta mb-3">Gestión</p>
+            <h1 class="text-4xl font-display text-ink">Sesiones</h1>
         </div>
-        <a href="{{ route('admin.session.create') }}" class="btn btn-success">
-            <i class="fas fa-plus me-2"></i>Nueva Sesión
+        <a href="{{ route('admin.session.create') }}" class="btn-accent">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Nueva sesión
         </a>
     </div>
 
-    <!-- Messages -->
+    {{-- Flash --}}
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show">
-            <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div x-data="{show: true}" x-show="show" class="mb-8 border-l-2 border-emerald-600 bg-paper px-5 py-4 flex items-start justify-between gap-4">
+            <p class="text-sm text-ink">{{ session('success') }}</p>
+            <button @click="show = false" class="text-zinc-400 hover:text-ink transition" aria-label="Cerrar">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
         </div>
     @endif
 
-    <!-- Sessions Grid -->
-    <div class="row">
-        @forelse($sessions as $session)
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h5 class="card-title mb-0">{{ $session->title }}</h5>
-                        <span class="badge {{ $session->listed ? 'bg-success' : 'bg-secondary' }}">
-                            {{ $session->listed ? 'Visible' : 'Oculta' }}
-                        </span>
+    @if($sessions->count() > 0)
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach($sessions as $session)
+                @php $photoCount = $session->getMedia('photos')->count(); @endphp
+                <article class="border border-zinc-200 bg-paper flex flex-col">
+                    <div class="p-5 flex-1">
+                        <div class="flex items-start justify-between gap-3 mb-4">
+                            <h2 class="text-lg font-display text-ink leading-tight">{{ $session->title }}</h2>
+                            <span class="meta inline-flex items-center gap-1.5 flex-shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full {{ $session->listed ? 'bg-emerald-500' : 'bg-zinc-300' }}"></span>
+                                {{ $session->listed ? 'Visible' : 'Oculta' }}
+                            </span>
+                        </div>
+
+                        <div class="space-y-1.5 mb-4">
+                            <p class="meta">{{ $session->date->format('d.m.Y') }}</p>
+                            <p class="meta">{{ $photoCount }} {{ Str::plural('foto', $photoCount) }}</p>
+                        </div>
+
+                        @if($session->description)
+                            <p class="text-sm text-zinc-500 line-clamp-2">{{ Str::limit($session->description, 100) }}</p>
+                        @endif
                     </div>
-                    
-                    <p class="card-text">
-                        <i class="fas fa-calendar me-2"></i>{{ $session->date->format('d/m/Y') }}
-                    </p>
-                    
-                    <p class="card-text">
-                        <i class="fas fa-images me-2"></i>{{ $session->getMedia('photos')->count() }} fotos
-                    </p>
-                    
-                    @if($session->description)
-                        <p class="card-text text-muted">{{ Str::limit($session->description, 80) }}</p>
-                    @endif
-                </div>
-                
-                <div class="card-footer bg-transparent">
-                    <div class="d-grid gap-2">
-                        <a href="{{ route('admin.session.photos', $session->id) }}" class="btn btn-primary">
-                            <i class="fas fa-images me-2"></i>Gestionar Fotos
+
+                    <div class="border-t border-zinc-200 divide-y divide-zinc-200">
+                        <a href="{{ route('admin.session.photos', $session->id) }}"
+                           class="flex items-center justify-between px-5 py-3 hover:bg-zinc-50 transition group">
+                            <span class="meta text-ink">Gestionar fotos</span>
+                            <svg class="w-3.5 h-3.5 text-zinc-400 group-hover:text-accent transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                            </svg>
                         </a>
-                        <div class="btn-group w-100" role="group">
-                            <a href="{{ route('session.show', $session->slug) }}" 
-                               class="btn btn-outline-info btn-sm" target="_blank">
-                                <i class="fas fa-eye me-2"></i>Ver en sitio
+                        <div class="grid grid-cols-2 divide-x divide-zinc-200">
+                            <a href="{{ route('session.show', $session->slug) }}" target="_blank"
+                               class="text-center px-3 py-2.5 meta hover:text-ink hover:bg-zinc-50 transition">
+                                Ver en sitio
                             </a>
-                            <button class="btn btn-outline-danger btn-sm" 
-                                    onclick="confirmDelete({{ $session->id }}, '{{ $session->title }}')" 
-                                    title="Eliminar sesión">
-                                <i class="fas fa-trash me-2"></i>Eliminar
+                            <button type="button"
+                                    onclick="confirmDelete({{ $session->id }}, @js($session->title))"
+                                    class="text-center px-3 py-2.5 meta hover:text-accent hover:bg-zinc-50 transition">
+                                Eliminar
                             </button>
                         </div>
                     </div>
-                </div>
-            </div>
+                </article>
+            @endforeach
         </div>
-        @empty
-        <div class="col-12">
-            <div class="text-center py-5">
-                <i class="fas fa-photo-video fa-3x text-muted mb-3"></i>
-                <h3>No hay sesiones</h3>
-                <p class="text-muted">Crea tu primera sesión de fotos</p>
-                <a href="{{ route('admin.session.create') }}" class="btn btn-success">
-                    <i class="fas fa-plus me-2"></i>Nueva Sesión
-                </a>
-            </div>
+    @else
+        <div class="text-center py-24 max-w-md mx-auto">
+            <p class="meta mb-4">Vacío</p>
+            <h2 class="font-display text-2xl text-ink mb-3">No hay sesiones todavía</h2>
+            <p class="text-zinc-500 mb-8">Crea tu primera sesión para empezar a subir fotos.</p>
+            <a href="{{ route('admin.session.create') }}" class="btn-accent">Crear sesión</a>
         </div>
-        @endforelse
-    </div>
+    @endif
 </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script>
 function confirmDelete(sessionId, sessionTitle) {
-    if (confirm('¿Estás seguro de eliminar la sesión "' + sessionTitle + '"?\n\nEsta acción eliminará también todas las fotos asociadas y no se puede deshacer.')) {
-        // Crear formulario dinámico para DELETE
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/admin/sesiones/' + sessionId;
-        
-        // Token CSRF
-        const csrfToken = document.createElement('input');
-        csrfToken.type = 'hidden';
-        csrfToken.name = '_token';
-        csrfToken.value = '{{ csrf_token() }}';
-        
-        // Method DELETE
-        const methodField = document.createElement('input');
-        methodField.type = 'hidden';
-        methodField.name = '_method';
-        methodField.value = 'DELETE';
-        
-        form.appendChild(csrfToken);
-        form.appendChild(methodField);
-        document.body.appendChild(form);
-        form.submit();
-    }
+    if (!confirm('¿Eliminar la sesión "' + sessionTitle + '"?\n\nSe eliminarán también todas sus fotos. Esta acción no se puede deshacer.')) return;
+
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/admin/sesiones/' + sessionId;
+
+    const csrf = document.createElement('input');
+    csrf.type = 'hidden';
+    csrf.name = '_token';
+    csrf.value = '{{ csrf_token() }}';
+
+    const method = document.createElement('input');
+    method.type = 'hidden';
+    method.name = '_method';
+    method.value = 'DELETE';
+
+    form.appendChild(csrf);
+    form.appendChild(method);
+    document.body.appendChild(form);
+    form.submit();
 }
 </script>
-@endsection
+@endpush

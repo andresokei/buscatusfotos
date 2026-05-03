@@ -1,134 +1,100 @@
 @extends('layouts.admin')
 
-@section('title', 'Dashboard - Admin')
+@section('title', 'Dashboard — Admin')
 
 @section('content')
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <h1><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h1>
-            <p class="text-muted">Panel de administración de BuscaTusFotos.com</p>
-        </div>
-    </div>
+<div class="container-x">
 
-    <!-- Stats Cards -->
-    <div class="row mb-4">
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card bg-primary text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h5 class="card-title">Sesiones</h5>
-                            <h3>{{ \App\Models\Session::count() }}</h3>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-photo-video fa-2x"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card bg-success text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h5 class="card-title">Fotos</h5>
-                            <h3>{{ \Spatie\MediaLibrary\MediaCollections\Models\Media::where('collection_name', 'photos')->count() }}</h3>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-images fa-2x"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card bg-warning text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h5 class="card-title">Ventas</h5>
-                            <h3>{{ \App\Models\Purchase::where('payment_status', 'paid')->count() }}</h3>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-shopping-cart fa-2x"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card bg-info text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h5 class="card-title">Ingresos</h5>
-                            <h3>{{ number_format(\App\Models\Purchase::where('payment_status', 'paid')->sum('amount'), 2) }} €</h3>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-euro-sign fa-2x"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <header class="mb-10 pb-8 border-b border-zinc-200">
+        <p class="meta mb-3">Vista general</p>
+        <h1 class="text-4xl font-display text-ink">Dashboard</h1>
+    </header>
 
-    <!-- Quick Actions -->
-    <div class="row">
-        <div class="col-lg-6 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Acciones Rápidas</h5>
-                </div>
-                <div class="card-body">
-                    <div class="d-grid gap-2">
-                        <a href="{{ route('admin.sessions') }}" class="btn btn-primary">
-                            <i class="fas fa-photo-video me-2"></i>Gestionar Sesiones
-                        </a>
-                        <button class="btn btn-outline-secondary" onclick="window.open('{{ route('home') }}', '_blank')">
-                            <i class="fas fa-external-link-alt me-2"></i>Ver Sitio Web
-                        </button>
-                    </div>
-                </div>
-            </div>
+    {{-- Stats --}}
+    @php
+        $sessionCount = \App\Models\Session::count();
+        $photoCount = \Spatie\MediaLibrary\MediaCollections\Models\Media::where('collection_name', 'photos')->count();
+        $salesCount = \App\Models\Purchase::where('payment_status', 'paid')->count();
+        $revenue = \App\Models\Purchase::where('payment_status', 'paid')->sum('amount');
+    @endphp
+
+    <section class="grid grid-cols-2 lg:grid-cols-4 border border-zinc-200 bg-paper mb-12">
+        <div class="p-6 border-r border-b lg:border-b-0 border-zinc-200">
+            <p class="meta mb-3">Sesiones</p>
+            <p class="font-display text-4xl text-ink">{{ $sessionCount }}</p>
         </div>
-        
-        <div class="col-lg-6 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Últimas Ventas</h5>
-                </div>
-                <div class="card-body">
-                    @php
-                        $recentSales = \App\Models\Purchase::where('payment_status', 'paid')
-                            ->orderBy('created_at', 'desc')
-                            ->limit(5)
-                            ->get();
-                    @endphp
-                    
-                    @forelse($recentSales as $sale)
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div>
-                                <small class="text-muted">{{ $sale->email }}</small><br>
-                                <small>{{ count($sale->media_ids) }} fotos</small>
-                            </div>
-                            <div class="text-end">
-                                <strong>{{ number_format($sale->amount, 2) }} €</strong><br>
-                                <small class="text-muted">{{ $sale->created_at->format('d/m H:i') }}</small>
-                            </div>
+        <div class="p-6 border-b lg:border-r lg:border-b-0 border-zinc-200">
+            <p class="meta mb-3">Fotos</p>
+            <p class="font-display text-4xl text-ink">{{ $photoCount }}</p>
+        </div>
+        <div class="p-6 border-r border-zinc-200">
+            <p class="meta mb-3">Ventas</p>
+            <p class="font-display text-4xl text-ink">{{ $salesCount }}</p>
+        </div>
+        <div class="p-6">
+            <p class="meta mb-3">Ingresos</p>
+            <p class="font-display text-4xl text-ink">{{ number_format($revenue, 2) }} <span class="text-xl text-zinc-400">€</span></p>
+        </div>
+    </section>
+
+    {{-- Two columns --}}
+    <div class="grid lg:grid-cols-2 gap-10">
+
+        {{-- Quick actions --}}
+        <section>
+            <h2 class="meta mb-5">Acciones rápidas</h2>
+            <div class="border border-zinc-200 bg-paper divide-y divide-zinc-200">
+                <a href="{{ route('admin.sessions') }}"
+                   class="flex items-center justify-between px-5 py-4 hover:bg-zinc-50 transition group">
+                    <span class="text-sm text-ink">Gestionar sesiones</span>
+                    <svg class="w-4 h-4 text-zinc-400 group-hover:text-accent transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                </a>
+                <a href="{{ route('admin.session.create') }}"
+                   class="flex items-center justify-between px-5 py-4 hover:bg-zinc-50 transition group">
+                    <span class="text-sm text-ink">Crear nueva sesión</span>
+                    <svg class="w-4 h-4 text-zinc-400 group-hover:text-accent transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                </a>
+                <a href="{{ route('home') }}" target="_blank"
+                   class="flex items-center justify-between px-5 py-4 hover:bg-zinc-50 transition group">
+                    <span class="text-sm text-ink">Ver sitio público</span>
+                    <svg class="w-4 h-4 text-zinc-400 group-hover:text-accent transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                        <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+        {{-- Recent sales --}}
+        <section>
+            <h2 class="meta mb-5">Últimas ventas</h2>
+            @php
+                $recentSales = \App\Models\Purchase::where('payment_status', 'paid')
+                    ->orderBy('created_at', 'desc')
+                    ->limit(5)
+                    ->get();
+            @endphp
+            <div class="border border-zinc-200 bg-paper">
+                @forelse($recentSales as $sale)
+                    <div class="flex items-center justify-between px-5 py-4 {{ !$loop->last ? 'border-b border-zinc-200' : '' }}">
+                        <div class="min-w-0">
+                            <p class="text-sm text-ink truncate">{{ $sale->email }}</p>
+                            <p class="meta mt-1">{{ count($sale->media_ids) }} {{ Str::plural('foto', count($sale->media_ids)) }} · {{ $sale->created_at->format('d/m H:i') }}</p>
                         </div>
-                        @if(!$loop->last) <hr class="my-2"> @endif
-                    @empty
-                        <p class="text-muted mb-0">No hay ventas recientes</p>
-                    @endforelse
-                </div>
+                        <p class="font-display text-lg text-ink ml-4 flex-shrink-0">{{ number_format($sale->amount, 2) }} €</p>
+                    </div>
+                @empty
+                    <div class="px-5 py-10 text-center">
+                        <p class="meta">Sin ventas todavía</p>
+                    </div>
+                @endforelse
             </div>
-        </div>
+        </section>
+
     </div>
 </div>
 @endsection

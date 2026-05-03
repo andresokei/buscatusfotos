@@ -3,64 +3,64 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Admin - BuscaTusFotos')</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Admin — BuscaTusFotos')</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-light">
-    <!-- Admin Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="{{ route('admin.index') }}">
-                <i class="fas fa-user-shield me-2"></i>Admin Panel
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.index') ? 'active' : '' }}" 
-                           href="{{ route('admin.index') }}">
-                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.sessions*') ? 'active' : '' }}" 
-                           href="{{ route('admin.sessions') }}">
-                            <i class="fas fa-photo-video me-1"></i>Sesiones
-                        </a>
-                    </li>
-                </ul>
-                
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}" target="_blank">
-                            <i class="fas fa-external-link-alt me-1"></i>Ver Sitio
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <form action="{{ route('admin.logout') }}" method="POST" class="d-inline">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-light btn-sm">
-                                <i class="fas fa-sign-out-alt me-1"></i>Cerrar Sesión
-                            </button>
-                        </form>
-                    </li>
-                </ul>
+<body class="min-h-screen flex flex-col bg-zinc-50">
+
+    <header class="border-b border-zinc-200 bg-paper sticky top-0 z-40">
+        <div class="container-x flex items-center justify-between h-16">
+            <div class="flex items-center gap-8">
+                <a href="{{ route('admin.index') }}" class="font-display text-lg tracking-tightish text-ink">
+                    BuscaTusFotos<span class="text-accent">·</span><span class="meta align-middle ml-1">Admin</span>
+                </a>
+
+                <nav class="hidden md:flex items-center gap-6 ml-4">
+                    <a href="{{ route('admin.index') }}"
+                       class="meta hover:text-ink transition border-b-2 pb-1 {{ request()->routeIs('admin.index') ? 'border-ink text-ink' : 'border-transparent' }}">
+                        Dashboard
+                    </a>
+                    <a href="{{ route('admin.sessions') }}"
+                       class="meta hover:text-ink transition border-b-2 pb-1 {{ request()->routeIs('admin.sessions*') || request()->routeIs('admin.session.*') ? 'border-ink text-ink' : 'border-transparent' }}">
+                        Sesiones
+                    </a>
+                </nav>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="{{ route('home') }}" target="_blank" class="meta hover:text-ink transition inline-flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                        <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                    </svg>
+                    Ver sitio
+                </a>
+                <form action="{{ route('admin.logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="meta hover:text-accent transition">
+                        Salir
+                    </button>
+                </form>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <!-- Main Content -->
-    <main class="py-4">
+    <main class="flex-1 py-10 lg:py-14">
         @yield('content')
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    @yield('scripts')
+    <footer class="border-t border-zinc-200 mt-12 py-6 bg-paper">
+        <div class="container-x">
+            <p class="meta">Panel de administración · BuscaTusFotos</p>
+        </div>
+    </footer>
+
+    @stack('scripts')
 </body>
 </html>

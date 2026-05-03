@@ -1,152 +1,128 @@
 @extends('layouts.admin')
 
-@section('title', 'Nueva Sesión - Admin')
+@section('title', 'Nueva sesión — Admin')
 
 @section('content')
-<div class="container-fluid">
-    <!-- Header -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admin.sessions') }}">Sesiones</a></li>
-                    <li class="breadcrumb-item active">Nueva Sesión</li>
-                </ol>
-            </nav>
-            
-            <h1><i class="fas fa-plus me-2"></i>Crear Nueva Sesión</h1>
-            <p class="text-muted">Completa los datos y sube fotos de la nueva sesión</p>
-        </div>
-    </div>
+<div class="container-x">
 
-    <form action="{{ route('admin.session.store') }}" method="POST" enctype="multipart/form-data">
+    {{-- Breadcrumb --}}
+    <nav class="meta mb-8">
+        <a href="{{ route('admin.index') }}" class="hover:text-ink transition">Dashboard</a>
+        <span class="text-zinc-300 mx-2">/</span>
+        <a href="{{ route('admin.sessions') }}" class="hover:text-ink transition">Sesiones</a>
+        <span class="text-zinc-300 mx-2">/</span>
+        <span class="text-ink">Nueva</span>
+    </nav>
+
+    {{-- Header --}}
+    <header class="mb-10 pb-8 border-b border-zinc-200">
+        <p class="meta mb-3">Crear</p>
+        <h1 class="text-4xl font-display text-ink">Nueva sesión</h1>
+    </header>
+
+    <form action="{{ route('admin.session.store') }}" method="POST" enctype="multipart/form-data" class="space-y-10">
         @csrf
-        
-        <div class="row">
-            <!-- Datos de la Sesión -->
-            <div class="col-lg-6 mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-photo-video me-2"></i>Datos de la Sesión</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <label for="title" class="form-label">
-                                <i class="fas fa-heading me-2"></i>Título de la Sesión *
-                            </label>
-                            <input type="text" name="title" id="title" class="form-control" 
-                                   placeholder="Ej: Sesión Playa del Sardinero" 
-                                   value="{{ old('title') }}" required>
-                            @error('title')
-                                <div class="text-danger small">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="date" class="form-label">
-                                <i class="fas fa-calendar me-2"></i>Fecha *
-                            </label>
-                            <input type="date" name="date" id="date" class="form-control" 
-                                   value="{{ old('date', date('Y-m-d')) }}" required>
-                            @error('date')
-                                <div class="text-danger small">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="description" class="form-label">
-                                <i class="fas fa-align-left me-2"></i>Descripción (opcional)
-                            </label>
-                            <textarea name="description" id="description" class="form-control" rows="3" 
-                                      placeholder="Describe la sesión, condiciones del mar, etc.">{{ old('description') }}</textarea>
-                            @error('description')
-                                <div class="text-danger small">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input type="checkbox" name="listed" id="listed" class="form-check-input" 
-                                       {{ old('listed', true) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="listed">
-                                    <i class="fas fa-eye me-2"></i>Visible en el sitio público
-                                </label>
-                                <div class="form-text">Si no está marcado, la sesión estará oculta</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Subir Fotos -->
-            <div class="col-lg-6 mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-images me-2"></i>Fotos de la Sesión</h5>
+        <div class="grid lg:grid-cols-2 gap-10">
+            {{-- Datos --}}
+            <section>
+                <h2 class="meta mb-5">Datos de la sesión</h2>
+                <div class="border border-zinc-200 bg-paper p-6 space-y-5">
+                    <div>
+                        <label for="title" class="label">Título *</label>
+                        <input type="text" name="title" id="title" class="input"
+                               placeholder="Ej: Sesión Playa del Sardinero"
+                               value="{{ old('title') }}" required>
+                        @error('title')
+                            <p class="text-xs text-accent mt-2">{{ $message }}</p>
+                        @enderror
                     </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <label for="photos" class="form-label">
-                                <i class="fas fa-cloud-upload-alt me-2"></i>Seleccionar Fotos (opcional)
-                            </label>
-                            <input type="file" name="photos[]" id="photos" class="form-control" 
-                                   accept="image/*" multiple>
-                            <div class="form-text">
-                                Puedes seleccionar múltiples fotos. Formatos: JPG, PNG, GIF. Máximo 10MB por foto.
-                            </div>
+
+                    <div>
+                        <label for="date" class="label">Fecha *</label>
+                        <input type="date" name="date" id="date" class="input"
+                               value="{{ old('date', date('Y-m-d')) }}" required>
+                        @error('date')
+                            <p class="text-xs text-accent mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="description" class="label">Descripción</label>
+                        <textarea name="description" id="description" rows="4" class="input resize-none"
+                                  placeholder="Describe la sesión, condiciones del mar, etc.">{{ old('description') }}</textarea>
+                        @error('description')
+                            <p class="text-xs text-accent mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <label for="listed" class="flex items-start gap-3 cursor-pointer pt-2">
+                        <input type="checkbox" name="listed" id="listed" value="1"
+                               {{ old('listed', true) ? 'checked' : '' }}
+                               class="mt-0.5 rounded-none border-zinc-300 text-ink focus:ring-0 focus:ring-offset-0">
+                        <div>
+                            <p class="text-sm text-ink">Visible en el sitio público</p>
+                            <p class="meta mt-1 normal-case tracking-normal">Si lo desmarcas, la sesión queda oculta para los visitantes</p>
                         </div>
-                        
-                        <div id="photo-preview" class="row"></div>
-                    </div>
+                    </label>
                 </div>
-            </div>
+            </section>
+
+            {{-- Upload --}}
+            <section>
+                <h2 class="meta mb-5">Fotos de la sesión</h2>
+                <div class="border border-zinc-200 bg-paper p-6">
+                    <label for="photos" class="block border border-dashed border-zinc-300 hover:border-ink transition p-8 text-center cursor-pointer">
+                        <svg class="w-8 h-8 mx-auto text-zinc-400 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        <p class="text-sm text-ink mb-1">Selecciona fotos o arrástralas aquí</p>
+                        <p class="meta normal-case tracking-normal">JPG, PNG, GIF · máx 10 MB cada una</p>
+                        <input type="file" name="photos[]" id="photos" accept="image/*" multiple class="hidden">
+                    </label>
+
+                    <div id="photo-preview" class="grid grid-cols-3 gap-2 mt-5"></div>
+                </div>
+            </section>
         </div>
-        
-        <div class="row">
-            <div class="col-12">
-                <div class="d-flex justify-content-between">
-                    <a href="{{ route('admin.sessions') }}" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left me-2"></i>Cancelar
-                    </a>
-                    <button type="submit" class="btn btn-success">
-                        <i class="fas fa-save me-2"></i>Crear Sesión y Subir Fotos
-                    </button>
-                </div>
-            </div>
+
+        <div class="flex items-center justify-between pt-6 border-t border-zinc-200">
+            <a href="{{ route('admin.sessions') }}" class="meta hover:text-ink transition">
+                ← Cancelar
+            </a>
+            <button type="submit" class="btn-accent btn-lg">
+                Crear sesión
+            </button>
         </div>
     </form>
 </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script>
 document.getElementById('photos').addEventListener('change', function(e) {
     const preview = document.getElementById('photo-preview');
     preview.innerHTML = '';
-    
-    if (e.target.files.length > 0) {
-        Array.from(e.target.files).forEach((file, index) => {
-            if (file.type.startsWith('image/')) {
-                const col = document.createElement('div');
-                col.className = 'col-md-4 mb-3';
-                
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    col.innerHTML = `
-                        <div class="card">
-                            <img src="${e.target.result}" class="card-img-top" style="height: 120px; object-fit: cover;">
-                            <div class="card-body p-2">
-                                <small class="text-muted">${file.name}</small>
-                            </div>
-                        </div>
-                    `;
-                };
-                reader.readAsDataURL(file);
-                preview.appendChild(col);
-            }
-        });
-    }
+
+    if (e.target.files.length === 0) return;
+
+    Array.from(e.target.files).forEach((file) => {
+        if (!file.type.startsWith('image/')) return;
+
+        const cell = document.createElement('div');
+        cell.className = 'relative aspect-square bg-zinc-100 overflow-hidden';
+
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            cell.innerHTML = `
+                <img src="${ev.target.result}" class="w-full h-full object-cover" alt="${file.name}">
+                <div class="absolute inset-x-0 bottom-0 bg-ink/80 text-paper text-[10px] tracking-wider uppercase px-2 py-1 truncate" title="${file.name}">${file.name}</div>
+            `;
+        };
+        reader.readAsDataURL(file);
+        preview.appendChild(cell);
+    });
 });
 </script>
-@endsection
+@endpush
