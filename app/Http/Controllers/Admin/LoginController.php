@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -14,21 +16,38 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $username = $request->username;
-        $password = $request->password;
+        $credentials = $request->validate([
+            'username' => 'required|string|max:255',
+            'password' => 'required|string|max:255',
+        ]);
 
-        // Credenciales básicas (en producción usar hash)
-        if ($username === 'andresokei' && $password === 'admin2020!') {
+        $adminUsername = config('admin.username');
+        $adminPasswordHash = config('admin.password_hash');
+
+        if (! $adminUsername || ! $adminPasswordHash) {
+            Log::error('Admin login is not configured');
+
+            return back()->with('error', 'El acceso de administracion no esta configurado');
+        }
+
+        $validUsername = hash_equals($adminUsername, $credentials['username']);
+        $validPassword = Hash::check($credentials['password'], $adminPasswordHash);
+
+        if ($validUsername && $validPassword) {
+            $request->session()->regenerate();
             session(['admin_logged_in' => true]);
+
             return redirect()->route('admin.index');
         }
 
         return back()->with('error', 'Credenciales incorrectas');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         session()->forget('admin_logged_in');
+        $request->session()->regenerateToken();
+
         return redirect()->route('admin.login');
     }
 }

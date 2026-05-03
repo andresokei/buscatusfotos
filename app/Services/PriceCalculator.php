@@ -4,21 +4,23 @@ namespace App\Services;
 
 class PriceCalculator
 {
-    public static function calculate($photoCount)
-{
-    $prices = config('ofertas.precios');
-    
-    if ($photoCount <= 6) {
-            return $prices[$photoCount] ?? $prices[6];
-        } else {
-            // Más de 6 fotos: precio de 6 + extras
-            $extras = $photoCount - 6;
-            return $prices[6] + ($extras * $prices['extra']);
-        }
-}
-    
-    public static function formatPrice($cents)
+    public static function calculate(int $photoCount): int
     {
-        return number_format($cents / 100, 2) . ' €';
+        $prices = config('ofertas.precios');
+
+        if ($photoCount <= 0) {
+            return 0;
+        }
+
+        if ($photoCount <= 6) {
+            return $prices[$photoCount] ?? $prices[6];
+        }
+
+        return $prices[6] + (($photoCount - 6) * $prices['extra']);
+    }
+
+    public static function formatPrice(int $cents): string
+    {
+        return number_format($cents / 100, 2) . ' EUR';
     }
 }

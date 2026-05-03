@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\PriceCalculator;
+use App\Models\Purchase;
+use App\Services\PurchaseFulfillmentService;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CompraFotosMailable;
-use App\Models\Purchase;
 use Illuminate\Support\Str;
 
 
@@ -26,7 +27,7 @@ class CheckoutController extends Controller
 
     $amount = PriceCalculator::calculate(count($cart));
     
-    \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+    \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
     
     try {
         $session = \Stripe\Checkout\Session::create([
@@ -43,8 +44,8 @@ class CheckoutController extends Controller
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => env('APP_URL') . '/checkout/success?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => env('APP_URL') . '/carrito',
+            'success_url' => config('app.url') . '/checkout/success?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => config('app.url') . '/carrito',
             'customer_email' => $request->email,
             'metadata' => [
                 'cart' => json_encode($cart),
@@ -70,7 +71,7 @@ class CheckoutController extends Controller
         // 'session_id' => 1,
         'amount' => $amount / 100, // Convertir céntimos a euros
         'download_token' => Str::uuid(),
-        'expires_at' => now()->addHours(72),
+        'expires_at' => now()->addHours(config('ofertas.descarga.expiracion_horas', 72)),
         'payment_status' => 'paid'
     ]);
     
@@ -84,31 +85,21 @@ class CheckoutController extends Controller
         ->with('success', 'Pago procesado correctamente. Se ha enviado un email con el enlace de descarga.');
 }
 
-public function success(Request $request)
+public function success(Request $request, PurchaseFulfillmentService $fulfillment)
 {
-    \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+    \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
     
     try {
         $sessionId = $request->get('session_id');
+        if (!$sessionId) {
+            return redirect()->route('cart.view')->with('error', 'No se encontro la sesion de pago');
+        }
+
         $session = \Stripe\Checkout\Session::retrieve($sessionId);
         
         if ($session->payment_status === 'paid') {
-            // Crear la compra
-            $cart = json_decode($session->metadata->cart, true);
-            $purchase = Purchase::create([
-                'email' => $session->metadata->email,
-                'media_ids' => $cart,
-                // 'session_id' => 1,
-                'amount' => $session->amount_total / 100,
-                'download_token' => Str::uuid(),
-                'expires_at' => now()->addHours(72),
-                'payment_status' => 'paid'
-            ]);
+            $purchase = $fulfillment->fulfillStripeCheckout($session);
             
-            // Enviar email
-            Mail::to($purchase->email)->send(new CompraFotosMailable($purchase));
-            
-            // Limpiar carrito
             session()->forget('cart');
             
             return redirect()->route('download.show', $purchase->download_token)
