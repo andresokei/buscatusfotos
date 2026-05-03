@@ -44,6 +44,13 @@ return [
             'throw' => false,
         ],
 
+        'media' => [
+            'driver' => 'local',
+            'root' => storage_path('app/media'),
+            'visibility' => 'private',
+            'throw' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -70,7 +77,9 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        // El disco de fotos ("media") es privado y se sirve via MediaController.
+        // Si en el futuro vuelve a hacer falta un disco public expuesto, restaurar:
+        // public_path('storage') => storage_path('app/public'),
     ],
 
 ];

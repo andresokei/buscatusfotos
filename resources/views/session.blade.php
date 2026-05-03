@@ -63,10 +63,10 @@
                         <button type="button"
                                 class="block w-full aspect-square overflow-hidden cursor-zoom-in"
                                 data-open-photo
-                                data-url="{{ $photo->getUrl('thumb') }}"
+                                data-url="{{ route('photo.thumb', $photo) }}"
                                 data-name="{{ $photo->name }}"
                                 data-id="{{ $photo->id }}">
-                            <img src="{{ $photo->getUrl('thumb') }}"
+                            <img src="{{ route('photo.thumb', $photo) }}"
                                  alt="{{ $photo->name }}"
                                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                  loading="lazy">

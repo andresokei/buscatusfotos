@@ -47,7 +47,7 @@
 
                         <div class="relative overflow-hidden bg-zinc-100 aspect-[4/3] mb-5">
                             @if($coverPhoto)
-                                <img src="{{ $coverPhoto->getUrl('thumb') }}"
+                                <img src="{{ route('photo.thumb', $coverPhoto) }}"
                                      alt="{{ $session->title }}"
                                      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                             @else

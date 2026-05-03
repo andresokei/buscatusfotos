@@ -4,11 +4,16 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\MediaController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/sesion/{slug}', [SessionController::class, 'show'])->name('session.show');
 Route::get('/carrito', [CartController::class, 'view'])->name('cart.view');
 Route::post('/carrito', [CartController::class, 'update'])->name('cart.update');
+
+// Servir fotos desde el disco privado (no van por nginx/static)
+Route::get('/foto/{media}/thumb', [MediaController::class, 'thumb'])->name('photo.thumb');
+Route::get('/foto/{media}/original', [MediaController::class, 'original'])->name('photo.original');
 
 // Rutas de administración
 // Rutas de login

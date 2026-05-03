@@ -81,8 +81,8 @@
             <div id="photos-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
                 @foreach($photos as $photo)
                     <article class="photo-cell group relative bg-zinc-100 border border-zinc-200" data-photo-id="{{ $photo->id }}">
-                        <a href="{{ $photo->getUrl() }}" target="_blank" class="block aspect-square overflow-hidden">
-                            <img src="{{ $photo->getUrl() }}" alt="{{ $photo->name }}"
+                        <a href="{{ route('photo.original', $photo) }}" target="_blank" class="block aspect-square overflow-hidden">
+                            <img src="{{ route('photo.thumb', $photo) }}" alt="{{ $photo->name }}"
                                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                  loading="lazy">
                         </a>
