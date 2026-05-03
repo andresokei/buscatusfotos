@@ -1,257 +1,207 @@
 @extends('layouts.app')
 
-@section('title', 'Carrito - BuscaTusFotos')
+@section('title', 'Carrito — BuscaTusFotos')
 
 @section('content')
-<div class="container">
-    <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('home') }}">Inicio</a></li>
-            <li class="breadcrumb-item active">Carrito</li>
-        </ol>
+<div class="container-x">
+
+    {{-- Breadcrumb --}}
+    <nav class="meta mb-10">
+        <a href="{{ route('home') }}" class="hover:text-ink transition">Inicio</a>
+        <span class="text-zinc-300 mx-2">/</span>
+        <span class="text-ink">Carrito</span>
     </nav>
 
-    <!-- Pricing Info -->
-@if(count($cart) > 0)
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="alert alert-info">
-            <div class="row text-center">
-                <div class="col-6 col-md-3">
-                    <strong>1 foto:</strong> 5,00 €
-                </div>
-                <div class="col-6 col-md-3">
-                    <strong>2 fotos:</strong> 9,00 €
-                </div>
-                <div class="col-6 col-md-3">
-                    <strong>3 fotos:</strong> 12,00 €
-                </div>
-                <div class="col-6 col-md-3">
-                    <strong>6+ fotos:</strong> desde 20,00 €
-                </div>
-            </div>
-            <div class="text-center mt-2">
-                <small>¡Añade más fotos y ahorra dinero!</small>
-            </div>
-        </div>
-    </div>
-</div>
-@endif
-
-    <!-- Messages -->
+    {{-- Flash messages --}}
     @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show">
-            <i class="fas fa-exclamation-triangle me-2"></i>{{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div x-data="{show: true}" x-show="show" class="mb-8 border-l-2 border-accent bg-zinc-50 px-5 py-4 flex items-start justify-between gap-4">
+            <p class="text-sm text-ink">{{ session('error') }}</p>
+            <button @click="show = false" class="text-zinc-400 hover:text-ink transition" aria-label="Cerrar">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
         </div>
     @endif
-
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show">
-            <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div x-data="{show: true}" x-show="show" class="mb-8 border-l-2 border-emerald-600 bg-zinc-50 px-5 py-4 flex items-start justify-between gap-4">
+            <p class="text-sm text-ink">{{ session('success') }}</p>
+            <button @click="show = false" class="text-zinc-400 hover:text-ink transition" aria-label="Cerrar">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
         </div>
     @endif
 
-    <!-- Cart Content -->
-    <div class="row">
-        <div class="col-lg-8">
-            <h1><i class="fas fa-shopping-cart me-2"></i>Mi Carrito</h1>
-            
-            @if(count($cart) > 0)
-                <!-- Photos in Cart -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">
-                            <i class="fas fa-images me-2"></i>Fotos seleccionadas ({{ count($cart) }})
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            @foreach($photos as $photo)
-                            <div class="col-md-4 col-sm-6 mb-3">
-                                <div class="card">
-                                    <img src="{{ $photo->getUrl('thumb') }}" class="card-img-top" 
-                                         alt="Foto" style="height: 150px; object-fit: cover; cursor: pointer;"
-                                         data-bs-toggle="modal" data-bs-target="#photoModal"
-                                         data-photo-url="{{ $photo->getUrl('thumb') }}"
-                                         data-photo-name="{{ $photo->name }}">
-                                    <div class="card-body p-2">
-                                        <button class="btn btn-outline-secondary btn-sm w-100 remove-from-cart" 
-                                                data-photo-id="{{ $photo->id }}" title="Eliminar del carrito">
-                                            <i class="fas fa-times me-1"></i>Quitar
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            @else
-                <div class="text-center">
-                    <div class="card">
-                        <div class="card-body py-5">
-                            <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
-                            <h3>Tu carrito está vacío</h3>
-                            <p class="text-muted">Explora nuestras sesiones y añade fotos a tu carrito</p>
-                            <a href="{{ route('home') }}" class="btn btn-primary">
-                                <i class="fas fa-search me-2"></i>Ver Sesiones
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            @endif
+    {{-- Header --}}
+    <header class="mb-10 pb-8 border-b border-zinc-200">
+        <p class="meta mb-3">Tu selección</p>
+        <h1 class="text-4xl md:text-5xl font-display text-ink">Carrito</h1>
+    </header>
+
+    @if(count($cart) > 0)
+        {{-- Pricing reminder --}}
+        <div class="mb-12 grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-zinc-200 border border-zinc-200 text-center">
+            <div class="p-4">
+                <p class="meta">1 foto</p>
+                <p class="font-display mt-1">5 €</p>
+            </div>
+            <div class="p-4">
+                <p class="meta">2 fotos</p>
+                <p class="font-display mt-1">9 €</p>
+            </div>
+            <div class="p-4">
+                <p class="meta">3 fotos</p>
+                <p class="font-display mt-1">12 €</p>
+            </div>
+            <div class="p-4">
+                <p class="meta">6+ fotos</p>
+                <p class="font-display mt-1">desde 20 €</p>
+            </div>
         </div>
 
-        @if(count($cart) > 0)
-        <div class="col-lg-4">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-calculator me-2"></i>Resumen</h5>
+        <div class="grid lg:grid-cols-3 gap-12">
+            {{-- Photos --}}
+            <div class="lg:col-span-2">
+                <div class="flex items-end justify-between mb-6">
+                    <h2 class="text-xl font-display">Fotos seleccionadas</h2>
+                    <span class="meta">{{ count($cart) }} {{ Str::plural('foto', count($cart)) }}</span>
                 </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-3">
-                        <span>Fotos:</span>
-                        <strong id="cart-items-count">{{ count($cart) }}</strong>
-                    </div>
-                    <div class="d-flex justify-content-between mb-3">
-                        <span>Total:</span>
-                        <strong class="text-primary" id="cart-total">{{ \App\Services\PriceCalculator::formatPrice($price) }}</strong>
-                    </div>
-                    <hr>
-                    
-                    <form action="{{ route('checkout.create') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="email" class="form-label">
-                                <i class="fas fa-envelope me-2"></i>Tu email:
-                            </label>
-                            <input type="email" name="email" id="email" class="form-control" 
-                                   placeholder="tu@email.com" required>
-                            <div class="form-text">Te enviaremos las fotos a este email</div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    @foreach($photos as $photo)
+                        <div class="group relative bg-zinc-100 cart-item">
+                            <button type="button"
+                                    class="block w-full aspect-square overflow-hidden cursor-zoom-in"
+                                    data-open-photo
+                                    data-url="{{ $photo->getUrl('thumb') }}"
+                                    data-name="{{ $photo->name }}"
+                                    data-id="{{ $photo->id }}">
+                                <img src="{{ $photo->getUrl('thumb') }}"
+                                     alt="{{ $photo->name }}"
+                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                     loading="lazy">
+                            </button>
+
+                            <div class="absolute inset-x-0 bottom-0 p-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
+                                <button class="remove-from-cart btn btn-sm bg-paper/95 text-ink border-paper/95 hover:bg-accent hover:text-paper hover:border-accent w-full"
+                                        data-photo-id="{{ $photo->id }}">
+                                    Quitar
+                                </button>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-success w-100">
-                            <i class="fas fa-credit-card me-2"></i>Proceder al Pago
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- Summary --}}
+            <aside class="lg:sticky lg:top-24 lg:self-start">
+                <div class="border border-zinc-200 p-6">
+                    <p class="meta mb-6">Resumen</p>
+
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm">Fotos</span>
+                        <span id="cart-items-count" class="font-display text-lg">{{ count($cart) }}</span>
+                    </div>
+                    <div class="flex items-end justify-between mb-6 pt-4 border-t border-zinc-200">
+                        <span class="text-sm">Total</span>
+                        <span id="cart-total" class="font-display text-3xl">{{ \App\Services\PriceCalculator::formatPrice($price) }}</span>
+                    </div>
+
+                    <form action="{{ route('checkout.create') }}" method="POST" class="space-y-4">
+                        @csrf
+                        <div>
+                            <label for="email" class="label">Tu email</label>
+                            <input type="email" name="email" id="email" class="input" placeholder="tu@email.com" required>
+                            <p class="text-xs text-zinc-400 mt-2">Te enviaremos las fotos a este email</p>
+                        </div>
+                        <button type="submit" class="btn-accent btn-lg w-full">
+                            Proceder al pago
                         </button>
                     </form>
                 </div>
-            </div>
+            </aside>
         </div>
-        @endif
-    </div>
+    @else
+        {{-- Empty cart --}}
+        <div class="text-center py-24 max-w-md mx-auto">
+            <p class="meta mb-4">Vacío</p>
+            <h2 class="font-display text-3xl text-ink mb-3">Aún no has elegido fotos</h2>
+            <p class="text-zinc-500 mb-10">Explora las sesiones y añade tus mejores momentos en las olas.</p>
+            <a href="{{ route('home') }}" class="btn-primary">Ver sesiones</a>
+        </div>
+    @endif
 </div>
 
-<!-- Modal para ver foto grande -->
-<div class="modal fade" id="photoModal" tabindex="-1" aria-labelledby="photoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="photoModalLabel">
-                    <i class="fas fa-image me-2"></i>Vista previa
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center p-1">
-                <img id="modalPhoto" src="" alt="Foto grande" class="img-fluid" style="max-height: 60vh; width: auto;">
-            </div>
-            <div class="modal-footer">
-                <div class="w-100 text-center">
-                    <small class="text-muted">Esta foto está en tu carrito</small>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<x-photo-modal>
+    <span class="meta text-paper/60">En tu carrito</span>
+</x-photo-modal>
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const removeButtons = document.querySelectorAll('.remove-from-cart');
-    
-    // Función para eliminar del carrito
+    const cartCount = document.getElementById('cart-count');
+
+    function updateBadge(count) {
+        if (cartCount) {
+            cartCount.textContent = count;
+            if (count === 0) cartCount.classList.add('hidden');
+        }
+    }
+
     function removeFromCart(photoId, button) {
-        const originalText = button.innerHTML;
-        
+        const original = button.innerHTML;
         button.disabled = true;
-        button.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Eliminando...';
-        
+        button.textContent = 'Quitando…';
+
         fetch('/carrito', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            body: JSON.stringify({
-                photo_id: photoId,
-                action: 'remove'
-            })
+            body: JSON.stringify({ photo_id: photoId, action: 'remove' })
         })
-        .then(response => response.json())
+        .then(r => r.json())
         .then(data => {
-            if (data.success) {
-                // Eliminar la foto del DOM
-                button.closest('.col-md-4').remove();
-                
-                // Actualizar contador del carrito
-                document.getElementById('cart-count').textContent = data.cart_count;
-                document.getElementById('cart-items-count').textContent = data.cart_count;
-                
-                // Si no quedan fotos, recargar la página
-                if (data.cart_count === 0) {
-                    location.reload();
-                } else {
-                    // Actualizar el precio
-                    updateCartTotal(data.cart_count);
-                }
+            if (!data.success) throw new Error('remove fail');
+            const item = button.closest('.cart-item');
+            if (item) item.remove();
+
+            updateBadge(data.cart_count);
+            const itemsCount = document.getElementById('cart-items-count');
+            if (itemsCount) itemsCount.textContent = data.cart_count;
+
+            if (data.cart_count === 0) {
+                location.reload();
             } else {
-                throw new Error('Error al eliminar foto');
+                document.getElementById('cart-total').textContent = data.price;
             }
         })
-        .catch(error => {
+        .catch(() => {
             alert('Error al eliminar foto del carrito');
             button.disabled = false;
-            button.innerHTML = originalText;
+            button.innerHTML = original;
         });
     }
-    
-    // Event listeners para botones de eliminar
-    removeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const photoId = this.dataset.photoId;
-            if (confirm('¿Eliminar esta foto del carrito?')) {
-                removeFromCart(photoId, this);
-            }
+
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.remove-from-cart');
+        if (!btn || btn.disabled) return;
+        if (!confirm('¿Quitar esta foto del carrito?')) return;
+        removeFromCart(btn.dataset.photoId, btn);
+    });
+
+    document.querySelectorAll('[data-open-photo]').forEach(trigger => {
+        trigger.addEventListener('click', () => {
+            window.dispatchEvent(new CustomEvent('open-photo', {
+                detail: {
+                    url: trigger.dataset.url,
+                    name: trigger.dataset.name,
+                    id: parseInt(trigger.dataset.id, 10),
+                    inCart: true
+                }
+            }));
         });
     });
-    
-    // Event listener para abrir modal
-    document.querySelectorAll('.card-img-top').forEach(img => {
-        img.addEventListener('click', function() {
-            const photoUrl = this.dataset.photoUrl;
-            const photoName = this.dataset.photoName;
-            
-            document.getElementById('modalPhoto').src = photoUrl;
-            document.getElementById('photoModalLabel').innerHTML = '<i class="fas fa-image me-2"></i>' + photoName;
-        });
-    });
-    
-    // Función para actualizar el total del carrito
-    // Función para actualizar el total del carrito
-function updateCartTotal(count) {
-    const prices = {1: 5.00, 2: 9.00, 3: 12.00, 4: 15.00, 5: 17.50, 6: 20.00, extra: 3.00};
-    let total = 0;
-    
-    if (count <= 6) {
-        total = prices[count];
-    } else {
-        total = prices[6] + ((count - 6) * prices.extra);
-    }
-    
-    document.getElementById('cart-total').textContent = total.toFixed(2) + ' €';
-}
 });
 </script>
-@endsection
+@endpush

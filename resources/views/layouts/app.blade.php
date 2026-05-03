@@ -3,58 +3,55 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'BuscaTusFotos.com')</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="{{ route('home') }}">
-                <i class="fas fa-camera-retro me-2"></i>BuscaTusFotos
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">
-                            <i class="fas fa-home me-1"></i>Inicio
-                        </a>
-                    </li>
-                </ul>
-                
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link position-relative" href="{{ route('cart.view') }}">
-                            <i class="fas fa-shopping-cart me-1"></i>Carrito
-                            <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle" id="cart-count">
-                                {{ count(session('cart', [])) }}
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <title>@yield('title', 'BuscaTusFotos')</title>
 
-    <!-- Main Content -->
-    <main class="py-4">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="border-b border-zinc-200 bg-paper sticky top-0 z-40">
+        <div class="container-x flex items-center justify-between h-16">
+            <a href="{{ route('home') }}" class="font-display text-xl tracking-tightish text-ink">
+                BuscaTusFotos
+            </a>
+
+            <nav class="flex items-center gap-8">
+                <a href="{{ route('home') }}" class="meta hover:text-ink transition">
+                    Inicio
+                </a>
+                <a href="{{ route('cart.view') }}" class="meta hover:text-ink transition relative inline-flex items-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                        <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>
+                    </svg>
+                    Carrito
+                    @if(count(session('cart', [])) > 0)
+                        <span id="cart-count" class="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-accent text-paper text-[10px] font-medium">
+                            {{ count(session('cart', [])) }}
+                        </span>
+                    @else
+                        <span id="cart-count" class="hidden">0</span>
+                    @endif
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-1 py-12 lg:py-20">
         @yield('content')
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-light mt-5 py-4">
-        <div class="container text-center">
-            <p class="mb-0 text-muted">© 2025 BuscaTusFotos.com - Encuentra tus fotos de surf</p>
+    <footer class="border-t border-zinc-200 mt-20 py-10">
+        <div class="container-x flex flex-col md:flex-row items-center justify-between gap-4">
+            <p class="meta">© {{ date('Y') }} BuscaTusFotos</p>
+            <p class="meta">Encuentra tus fotos de surf</p>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    @yield('scripts')
+    @stack('scripts')
 </body>
 </html>

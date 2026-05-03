@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[x-cloak] { display: none !important; }
+
+@layer base {
+    html {
+        @apply text-ink bg-paper font-sans antialiased;
+    }
+    h1, h2, h3 {
+        @apply font-display tracking-tightish;
+    }
+}
+
+@layer components {
+    .container-x {
+        @apply max-w-6xl mx-auto px-6 lg:px-10;
+    }
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium uppercase tracking-wider border rounded-btn transition;
+    }
+    .btn-sm {
+        @apply px-4 py-2 text-xs;
+    }
+    .btn-lg {
+        @apply px-7 py-3.5 text-base;
+    }
+    .btn-primary {
+        @apply btn bg-ink text-paper border-ink hover:bg-paper hover:text-ink;
+    }
+    .btn-accent {
+        @apply btn bg-accent text-paper border-accent hover:bg-accent-hover hover:border-accent-hover;
+    }
+    .btn-ghost {
+        @apply btn bg-transparent text-ink border-zinc-300 hover:border-ink;
+    }
+    .btn-success {
+        @apply btn bg-emerald-700 text-paper border-emerald-700;
+    }
+    .card {
+        @apply bg-paper border border-zinc-200 rounded-card overflow-hidden transition hover:border-ink;
+    }
+    .input {
+        @apply w-full border border-zinc-300 rounded-none px-4 py-3 text-ink placeholder-zinc-400 focus:border-ink focus:ring-0;
+    }
+    .label {
+        @apply block text-xs uppercase tracking-wider text-zinc-500 mb-2;
+    }
+    .meta {
+        @apply text-xs uppercase tracking-wider text-zinc-500;
+    }
+    .divider {
+        @apply border-t border-zinc-200;
+    }
+}
