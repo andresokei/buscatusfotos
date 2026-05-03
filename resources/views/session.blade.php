@@ -27,27 +27,26 @@
         <div class="grid grid-cols-2 md:grid-cols-4 border border-zinc-200">
             <div class="p-5 border-r border-b md:border-b-0 border-zinc-200">
                 <p class="meta mb-2">1 foto</p>
-                <p class="text-2xl font-display">5 €</p>
-                <p class="text-xs text-zinc-400 mt-1">5 €/u</p>
+                <p class="text-2xl font-display">6 EUR</p>
+                <p class="text-xs text-zinc-400 mt-1">6 EUR/u</p>
             </div>
             <div class="p-5 border-b md:border-r md:border-b-0 border-zinc-200">
-                <p class="meta mb-2">2 fotos</p>
-                <p class="text-2xl font-display">9 €</p>
-                <p class="text-xs text-zinc-400 mt-1">4,50 €/u</p>
+                <p class="meta mb-2">3 fotos</p>
+                <p class="text-2xl font-display">13 EUR</p>
+                <p class="text-xs text-zinc-400 mt-1">4,33 EUR/u</p>
             </div>
             <div class="p-5 border-r border-zinc-200">
-                <p class="meta mb-2">3 fotos</p>
-                <p class="text-2xl font-display">12 €</p>
-                <p class="text-xs text-zinc-400 mt-1">4 €/u</p>
+                <p class="meta mb-2">6 fotos</p>
+                <p class="text-2xl font-display">22 EUR</p>
+                <p class="text-xs text-zinc-400 mt-1">3,67 EUR/u</p>
             </div>
             <div class="p-5">
-                <p class="meta mb-2">6+ fotos</p>
-                <p class="text-2xl font-display">desde 20 €</p>
-                <p class="text-xs text-zinc-400 mt-1">3,33 €/u</p>
+                <p class="meta mb-2">Extras</p>
+                <p class="text-2xl font-display">3 EUR</p>
+                <p class="text-xs text-zinc-400 mt-1">por foto adicional</p>
             </div>
         </div>
     </section>
-
     {{-- Photos gallery --}}
     @if($photos->count() > 0)
         <section>

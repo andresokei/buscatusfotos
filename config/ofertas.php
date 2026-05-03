@@ -2,14 +2,13 @@
 
 return [
     'precios' => [
-        // TEMPORAL: precios reducidos para prueba real de pago.
-        1 => 50,       // 1 foto = 0,50 EUR
-        2 => 50,       // 2 fotos = 0,50 EUR
-        3 => 50,       // 3 fotos = 0,50 EUR
-        4 => 50,       // 4 fotos = 0,50 EUR
-        5 => 50,       // 5 fotos = 0,50 EUR
-        6 => 50,       // 6 fotos = 0,50 EUR
-        'extra' => 50, // Cada foto adicional +0,50 EUR
+        1 => 600,       // 1 foto = 6,00 EUR
+        2 => 1000,      // 2 fotos = 10,00 EUR
+        3 => 1300,      // 3 fotos = 13,00 EUR
+        4 => 1600,      // 4 fotos = 16,00 EUR
+        5 => 1900,      // 5 fotos = 19,00 EUR
+        6 => 2200,      // 6 fotos = 22,00 EUR
+        'extra' => 300, // Cada foto adicional +3,00 EUR
     ],
 
     'descarga' => [

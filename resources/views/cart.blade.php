@@ -41,19 +41,19 @@
         <div class="mb-12 grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-zinc-200 border border-zinc-200 text-center">
             <div class="p-4">
                 <p class="meta">1 foto</p>
-                <p class="font-display mt-1">5 €</p>
-            </div>
-            <div class="p-4">
-                <p class="meta">2 fotos</p>
-                <p class="font-display mt-1">9 €</p>
+                <p class="font-display mt-1">6 EUR</p>
             </div>
             <div class="p-4">
                 <p class="meta">3 fotos</p>
-                <p class="font-display mt-1">12 €</p>
+                <p class="font-display mt-1">13 EUR</p>
             </div>
             <div class="p-4">
-                <p class="meta">6+ fotos</p>
-                <p class="font-display mt-1">desde 20 €</p>
+                <p class="meta">6 fotos</p>
+                <p class="font-display mt-1">22 EUR</p>
+            </div>
+            <div class="p-4">
+                <p class="meta">Extras</p>
+                <p class="font-display mt-1">3 EUR/foto</p>
             </div>
         </div>
 
