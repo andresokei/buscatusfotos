@@ -2,22 +2,23 @@
 
 return [
     'precios' => [
-        1 => 500,      // 1 foto = 5,00 €
-        2 => 900,      // 2 fotos = 9,00 € (4,50€ cada una)
-        3 => 1200,     // 3 fotos = 12,00 € (4,00€ cada una)
-        4 => 1500,     // 4 fotos = 15,00 € (3,75€ cada una)
-        5 => 1750,     // 5 fotos = 17,50 € (3,50€ cada una)
-        6 => 2000,     // 6 fotos = 20,00 € (3,33€ cada una)
-        'extra' => 300, // Cada foto adicional +3,00 €
+        // TEMPORAL: precios reducidos para prueba real de pago.
+        1 => 50,       // 1 foto = 0,50 EUR
+        2 => 50,       // 2 fotos = 0,50 EUR
+        3 => 50,       // 3 fotos = 0,50 EUR
+        4 => 50,       // 4 fotos = 0,50 EUR
+        5 => 50,       // 5 fotos = 0,50 EUR
+        6 => 50,       // 6 fotos = 0,50 EUR
+        'extra' => 50, // Cada foto adicional +0,50 EUR
     ],
-    
+
     'descarga' => [
         'expiracion_horas' => 72, // Tiempo de validez del token
-        'max_intentos' => 3,      // Máximo intentos de descarga
+        'max_intentos' => 3,      // Maximo intentos de descarga
     ],
-    
+
     'admin' => [
         'max_file_size' => 10485760, // 10MB en KB
         'allowed_types' => ['jpeg', 'png', 'jpg', 'gif'],
-    ]
+    ],
 ];
